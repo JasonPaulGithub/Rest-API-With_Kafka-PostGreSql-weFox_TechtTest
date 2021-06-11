@@ -1,0 +1,2 @@
+com/wefox/project/ProjectApplicationTests.java
+ com.wefox.project.ProjectApplicationTests

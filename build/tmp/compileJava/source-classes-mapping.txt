@@ -1,0 +1,2 @@
+com/wefox/project/ProjectApplication.java
+ com.wefox.project.ProjectApplication
