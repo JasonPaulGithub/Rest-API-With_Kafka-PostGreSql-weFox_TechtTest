@@ -1,2 +1,3 @@
 com/wefox/project/ProjectApplication.java
  com.wefox.project.ProjectApplication
+ com.wefox.project.ProjectApplication$KafkaConsumerConfig

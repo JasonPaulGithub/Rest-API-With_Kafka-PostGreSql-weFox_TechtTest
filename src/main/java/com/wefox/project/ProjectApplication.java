@@ -1,12 +1,19 @@
 package com.wefox.project;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import java.util.Collections;
-import java.util.Properties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 public class ProjectApplication {
@@ -16,52 +23,32 @@ public class ProjectApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
-        try {
-            runConsumer();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
-    private static Consumer<Long, String> createConsumer() {
-        final Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG,"KafkaExampleConsumer");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+	@EnableKafka
+	@Configuration
+	public class KafkaConsumerConfig {
+		@Bean
+		public ConsumerFactory<String, String> consumerFactory() {
+			Map<String, Object> props = new HashMap<>();
+			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+			props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaExampleConsumer");
+			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+			return new DefaultKafkaConsumerFactory<>(props);
+		}
+		@Bean
+		public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+			ConcurrentKafkaListenerContainerFactory<String, String>
+					factory = new ConcurrentKafkaListenerContainerFactory<>();
+			factory.setConsumerFactory(consumerFactory());
+			return factory;
+		}
+	}
 
-        // Create the consumer using props.
-        final Consumer<Long, String> consumer = new KafkaConsumer<>(props);
+	@KafkaListener(topics = {"online" , "offline"}, groupId = "group-id")
+	public void listen(String message) {
+		System.out.println("Received message : " + message);
+	}
 
-        // Subscribe to the topic.
-        consumer.subscribe(Collections.singletonList(TOPIC));
-        return consumer;
-    }
-
-    static void runConsumer() throws InterruptedException {
-        final Consumer<Long, String> consumer = createConsumer();
-
-        final int giveUp = 100;
-        int noRecordsCount = 0;
-
-        while (true) {
-            final ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000);
-
-            if (consumerRecords.count() == 0) {
-                noRecordsCount++;
-                if (noRecordsCount > giveUp) break;
-                else continue;
-            }
-
-            consumerRecords.forEach(record -> {
-                System.out.printf("Consumer Record:(%d, %s, %d, %d)\n",
-                        record.key(), record.value(),
-                        record.partition(), record.offset());
-            });
-
-            consumer.commitAsync();
-        }
-        consumer.close();
-        System.out.println("DONE::");
-    }
 }
