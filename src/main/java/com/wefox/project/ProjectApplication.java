@@ -18,7 +18,6 @@ import java.util.Map;
 @SpringBootApplication
 public class ProjectApplication {
 
-    private final static String TOPIC = "online";
     private final static String BOOTSTRAP_SERVERS = "localhost:29092";
 
     public static void main(String[] args) {
@@ -49,6 +48,13 @@ public class ProjectApplication {
 	@KafkaListener(topics = {"online" , "offline"}, groupId = "group-id")
 	public void listen(String message) {
 		System.out.println("Received message : " + message);
+
+		// Step 1 : Send data to DB (make test? use ORM?)
+
+		// Step 2 : Send data to external payment API via REST
+
+		// Process and outcomes of both steps will need to be logged. (try/catch both steps?)
+
 	}
 
 }
