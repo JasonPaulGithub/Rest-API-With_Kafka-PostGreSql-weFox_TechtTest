@@ -49,6 +49,8 @@ public class ProjectApplication {
 	public void listen(String message) {
 		System.out.println("Received message : " + message);
 
+		// Received message : {"payment_id": "17824764-652f-4556-9365-51b903554086", "account_id": 616, "payment_type": "online", "credit_card": "503893034499", "amount": 32, "delay": 187}
+
 		// Step 1 : Send data to DB (make test? use ORM?)
 
 		// Step 2 : Send data to external payment API via REST
