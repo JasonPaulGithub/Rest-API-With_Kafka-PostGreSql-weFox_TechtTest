@@ -1,3 +1,9 @@
+com/wefox/project/PersonRepository.java
+ com.wefox.project.PersonRepository
 com/wefox/project/ProjectApplication.java
  com.wefox.project.ProjectApplication
  com.wefox.project.ProjectApplication$KafkaConsumerConfig
+com/wefox/project/Person.java
+ com.wefox.project.Person
+com/wefox/project/PersonService.java
+ com.wefox.project.PersonService

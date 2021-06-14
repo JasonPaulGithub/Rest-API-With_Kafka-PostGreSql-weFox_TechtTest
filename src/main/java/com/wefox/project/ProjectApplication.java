@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +29,9 @@ public class ProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
     }
+
+	@Autowired
+	private PersonService personService;
 
 	@EnableKafka
 	@Configuration
@@ -50,6 +56,9 @@ public class ProjectApplication {
 
 	@KafkaListener(topics = {"online" , "offline"}, groupId = "group-id")
 	public void listen(String message) {
+
+		personService.create(1, "name");
+
 		System.out.println("Received message : " + message);
 
 		// Received message : {
@@ -73,6 +82,9 @@ public class ProjectApplication {
 		// Step 1 : Send data to DB (make test? use ORM?)
 
 		// Step 2 : Send data to external payment API via REST
+
+
+
 
 		// Process and outcomes of both steps will need to be logged. (try/catch both steps?)
 
