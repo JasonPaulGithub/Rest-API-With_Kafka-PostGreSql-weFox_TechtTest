@@ -22,6 +22,7 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
+	implementation group: 'org.json', name: 'json', version: '20210307'
 }
 
 test {

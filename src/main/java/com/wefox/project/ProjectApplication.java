@@ -1,7 +1,10 @@
 package com.wefox.project;
 
+import org.apache.commons.logging.Log;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +52,23 @@ public class ProjectApplication {
 	public void listen(String message) {
 		System.out.println("Received message : " + message);
 
-		// Received message : {"payment_id": "17824764-652f-4556-9365-51b903554086", "account_id": 616, "payment_type": "online", "credit_card": "503893034499", "amount": 32, "delay": 187}
+		// Received message : {
+			// "payment_id": "17824764-652f-4556-9365-51b903554086",
+			// "account_id": 616,
+			// "payment_type": "online",
+			// "credit_card": "503893034499",
+			// "amount": 32,
+			// "delay": 187
+		// }
+
+		JSONObject record;
+		try {
+			record = new JSONObject(message);
+			System.out.println(record.get("payment_id"));
+		}catch (JSONException err){
+			System.out.println(err.toString());
+		}
+
 
 		// Step 1 : Send data to DB (make test? use ORM?)
 
