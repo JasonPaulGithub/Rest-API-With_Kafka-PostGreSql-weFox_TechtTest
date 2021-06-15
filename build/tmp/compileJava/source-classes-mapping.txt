@@ -1,7 +1,7 @@
 com/wefox/project/AccountRepository.java
  com.wefox.project.AccountRepository
+com/wefox/project/Payment.java
+ com.wefox.project.Payment
 com/wefox/project/ProjectApplication.java
  com.wefox.project.ProjectApplication
  com.wefox.project.ProjectApplication$KafkaConsumerConfig
-com/wefox/project/Payment.java
- com.wefox.project.Payment
