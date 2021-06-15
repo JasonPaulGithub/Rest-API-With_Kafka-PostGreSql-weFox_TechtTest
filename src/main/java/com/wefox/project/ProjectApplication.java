@@ -1,6 +1,5 @@
 package com.wefox.project;
 
-import org.apache.commons.logging.Log;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.json.JSONException;
@@ -15,8 +14,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +22,7 @@ import java.util.Map;
 public class ProjectApplication {
 
 	@Autowired
-	private PersonRepository personRepository;
+	private AccountRepository accountRepository;
 
     private final static String BOOTSTRAP_SERVERS = "localhost:29092";
 
@@ -71,13 +68,13 @@ public class ProjectApplication {
 		JSONObject record;
 		try {
 			record = new JSONObject(message);
-			String id = record.get("payment_id").toString();
-			int accId = (int) record.get("account_id");
-			// personRepository.deleteAll();
-			Person person = new Person();
-			person.setName(id);
-			person.setId(accId);
-			personRepository.save(person);
+
+			Account account = new Account();
+			account.setAccountId((int) record.get("account_id"));
+			account.setPaymentId(record.get("payment_id").toString());
+			account.setPayment_type(record.get("payment_type").toString());
+
+			accountRepository.save(account);
 
 		}catch (JSONException err){
 			System.out.println(err.toString());

@@ -1,7 +1,7 @@
-com/wefox/project/PersonRepository.java
- com.wefox.project.PersonRepository
-com/wefox/project/Person.java
- com.wefox.project.Person
+com/wefox/project/Account.java
+ com.wefox.project.Account
+com/wefox/project/AccountRepository.java
+ com.wefox.project.AccountRepository
 com/wefox/project/ProjectApplication.java
  com.wefox.project.ProjectApplication
  com.wefox.project.ProjectApplication$KafkaConsumerConfig
