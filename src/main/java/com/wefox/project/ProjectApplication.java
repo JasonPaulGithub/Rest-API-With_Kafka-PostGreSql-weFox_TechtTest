@@ -65,16 +65,19 @@ public class ProjectApplication {
 			// "delay": 187
 		// }
 
-		JSONObject record;
+		JSONObject paymentRecord;
 		try {
-			record = new JSONObject(message);
+			paymentRecord = new JSONObject(message);
 
-			Account account = new Account();
-			account.setAccountId((int) record.get("account_id"));
-			account.setPaymentId(record.get("payment_id").toString());
-			account.setPayment_type(record.get("payment_type").toString());
+			Payment payment = new Payment();
+			payment.setAccountId((int) paymentRecord.get("account_id"));
+			payment.setPaymentId(paymentRecord.get("payment_id").toString());
+			payment.setPayment_type(paymentRecord.get("payment_type").toString());
+			payment.setCreditCard(paymentRecord.get("credit_card").toString());
+			payment.setAmount((int) paymentRecord.get("amount"));
+			//payment.setDelay(paymentRecord.get("delay").toString());
 
-			accountRepository.save(account);
+			accountRepository.save(payment);
 
 		}catch (JSONException err){
 			System.out.println(err.toString());
