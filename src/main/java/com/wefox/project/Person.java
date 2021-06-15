@@ -1,18 +1,17 @@
 package com.wefox.project;
 
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table
-@Data
+@Table(name = "person")
 public class Person {
+    
     @Id
-    @NotNull
     private int id;
 
     public int getId() {
@@ -33,10 +32,9 @@ public class Person {
     }
 
     @NotNull
+    @Column(name = "name")
     private String name;
 
-    public Person(int id, String name){
-        // this.setId(id);
-        // this.setName(name);
+    public Person() {
     }
 }

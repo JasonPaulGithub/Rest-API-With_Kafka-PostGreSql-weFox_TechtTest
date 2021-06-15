@@ -24,14 +24,14 @@ import java.util.Map;
 @SpringBootApplication
 public class ProjectApplication {
 
+	@Autowired
+	private PersonRepository personRepository;
+
     private final static String BOOTSTRAP_SERVERS = "localhost:29092";
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
     }
-
-	@Autowired
-	private PersonService personService;
 
 	@EnableKafka
 	@Configuration
@@ -57,8 +57,6 @@ public class ProjectApplication {
 	@KafkaListener(topics = {"online" , "offline"}, groupId = "group-id")
 	public void listen(String message) {
 
-		personService.create(1, "name");
-
 		System.out.println("Received message : " + message);
 
 		// Received message : {
@@ -73,7 +71,14 @@ public class ProjectApplication {
 		JSONObject record;
 		try {
 			record = new JSONObject(message);
-			System.out.println(record.get("payment_id"));
+			String id = record.get("payment_id").toString();
+			int accId = (int) record.get("account_id");
+			// personRepository.deleteAll();
+			Person person = new Person();
+			person.setName(id);
+			person.setId(accId);
+			personRepository.save(person);
+
 		}catch (JSONException err){
 			System.out.println(err.toString());
 		}
@@ -82,9 +87,6 @@ public class ProjectApplication {
 		// Step 1 : Send data to DB (make test? use ORM?)
 
 		// Step 2 : Send data to external payment API via REST
-
-
-
 
 		// Process and outcomes of both steps will need to be logged. (try/catch both steps?)
 
