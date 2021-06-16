@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "payments")
-public class PaymentObject {
+public class PaymentService {
 
     @Id
     private int account_id;
@@ -56,7 +56,7 @@ public class PaymentObject {
         this.credit_card = credit_card;
     }
 
-    public PaymentObject() {
+    public PaymentService() {
     }
 
     public Map<String, Object> getPayload() {

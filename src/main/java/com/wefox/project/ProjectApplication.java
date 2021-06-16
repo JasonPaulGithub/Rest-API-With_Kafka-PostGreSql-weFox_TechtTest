@@ -26,7 +26,7 @@ public class ProjectApplication {
 
 	final String paymentUrl = "http://localhost:9000/payment";
 	final String logUrl = "http://localhost:9000/log";
-	PaymentObject payment;
+	PaymentService payment;
 
 	public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
@@ -57,7 +57,7 @@ public class ProjectApplication {
 	public void listen(String message) {
 
 		// Step 1: Populate Database
-		payment = new PaymentObject();
+		payment = new PaymentService();
 		payment.populate(message);
 
 		try {
