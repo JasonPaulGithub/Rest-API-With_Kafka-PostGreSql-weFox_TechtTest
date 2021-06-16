@@ -27,8 +27,6 @@ public class ProjectApplication {
 	@Autowired
 	private AccountRepository accountRepository;
 
-    private final static String BOOTSTRAP_SERVERS = "localhost:29092";
-
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
     }
@@ -39,7 +37,7 @@ public class ProjectApplication {
 		@Bean
 		public ConsumerFactory<String, String> consumerFactory() {
 			Map<String, Object> props = new HashMap<>();
-			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
 			props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaExampleConsumer");
 			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -57,7 +55,7 @@ public class ProjectApplication {
 	@KafkaListener(topics = {"online" , "offline"}, groupId = "group-id")
 	public void listen(String message) {
 
-    	// Step 1: Populate Database
+	// Step 1: Populate Database
 
     	JSONObject paymentRecord;
 		try {
@@ -78,7 +76,7 @@ public class ProjectApplication {
 		}
 
 
-		// Step 2: Post the log data
+	// Step 2: Post the log data
 
 		// request url
 		String url = "http://localhost:9000/payment";
